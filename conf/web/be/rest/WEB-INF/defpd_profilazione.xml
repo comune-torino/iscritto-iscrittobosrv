@@ -1,0 +1,80 @@
+<porta-delegata name="serviscritto.profilazione">
+	<services>
+		<service name="profilazione"
+				 public-interface-class="it.csi.iscritto.serviscritto.interfacecsi.profilazione.ProfilazioneSrv"
+				 top-version="2.4.0">
+			<operations>
+				<operation name="getFunzioniAbilitateOperatore" type="synch-call" since="1.0.0">
+					<param-list>
+						<param name="codiceFiscale" type="java.lang.String" />
+						<param name="codiceProfilo" type="java.lang.String" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.profilazione.Funzione[]" />
+				</operation>
+				<operation name="getAttivitaAbilitateOperatore" type="synch-call" since="1.0.0">
+					<param-list>
+						<param name="codiceFiscale" type="java.lang.String" />
+						<param name="codiceProfilo" type="java.lang.String" />
+						<param name="codiceFunzione" type="java.lang.String" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.profilazione.Attivita[]" />
+				</operation>
+				<operation name="getPrivilegiOperatore" type="synch-call" since="1.0.0">
+					<param-list>
+						<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.profilazione.CallerInfoProfilazione" />
+						<param name="codiceFiscale" type="java.lang.String" />
+						<param name="codiceProfilo" type="java.lang.String" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.profilazione.PrivilegioOperatore[]" />
+				</operation>
+				<operation name="getOperatoreByCodiceFiscale" type="synch-call" since="1.2.0">
+					<param-list>
+						<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.profilazione.CallerInfoProfilazione" />
+						<param name="codiceFiscale" type="java.lang.String" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.profilazione.Operatore" />
+				</operation>
+				<operation name="getProfiliOperatore" type="synch-call" since="3.1.0">
+					<param-list>
+						<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.profilazione.CallerInfoProfilazione" />
+						<param name="codiceFiscale" type="java.lang.String" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.profilazione.Profilo[]" />
+				</operation>
+				<operation name="getCondizioniPunteggioNidi" type="synch-call" since="2.1.0">
+					<param-list>
+						<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.profilazione.CallerInfoProfilazione" />
+						<param name="codiceFiscale" type="java.lang.String" />
+						<param name="codiceProfilo" type="java.lang.String" />
+						<param name="tipoIstruttoria" type="java.lang.String" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.profilazione.CondizionePunteggio[]" />
+				</operation>
+				<operation name="getCondizioniPunteggioMaterne" type="synch-call" since="2.1.0">
+					<param-list>
+						<param name="callerInfo" type="it.csi.iscritto.serviscritto.dto.profilazione.CallerInfoProfilazione" />
+						<param name="codiceFiscale" type="java.lang.String" />
+						<param name="codiceProfilo" type="java.lang.String" />
+						<param name="tipoIstruttoria" type="java.lang.String" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.profilazione.CondizionePunteggio[]" />
+				</operation>
+			</operations>
+		</service>
+	</services>
+	<config>
+		<url-pa>**not used**</url-pa>
+		<pluggable-pd-list chooser-class="it.csi.csi.porte.FixedDelegateChooser">
+			<pluggable-pd name="serviscritto.profilazione.ejb" class="it.csi.csi.porte.ejb20.PortaDelegataEJB" url-pa="@iscritto.serviscritto.profilazione.pa.url@"
+				url-qm="serviscritto.ejb.ApplProfilazioneQMGR">
+			</pluggable-pd>
+		</pluggable-pd-list>
+		<pre-function-handler-list>
+
+		</pre-function-handler-list>
+		<post-function-handler-list>
+
+		</post-function-handler-list>
+		<queue-manager url="" />
+	</config>
+</porta-delegata>

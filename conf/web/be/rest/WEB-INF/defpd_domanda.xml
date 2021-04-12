@@ -1,0 +1,1069 @@
+<porta-delegata name="serviscritto.domanda">
+	<services>
+		<service name="domanda"
+			public-interface-class="it.csi.iscritto.serviscritto.interfacecsi.domanda.DomandaSrv"
+			top-version="2.6.0">
+			<operations>
+				<operation name="getElencoDomandeNidi" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codiceFiscaleOperatore" type="java.lang.String" />
+						<param name="codiceProfilo" type="java.lang.String" />
+						<param name="criterioRicerca"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CriterioRicerca" />
+					</param-list>
+					<ret-val type="java.lang.Long[]" />
+				</operation>
+				<operation name="getElencoDomandeMaterne" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codiceFiscaleOperatore" type="java.lang.String" />
+						<param name="codiceProfilo" type="java.lang.String" />
+						<param name="criterioRicerca"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CriterioRicerca" />
+					</param-list>
+					<ret-val type="java.lang.Long[]" />
+				</operation>
+				<operation name="getTestataDomanda" type="synch-call"
+					since="1.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="tipoTestata" type="java.lang.String" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.TestataDomanda" />
+				</operation>
+				<operation name="getElencoStatiDomanda" type="synch-call"
+					since="1.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.Codifica[]" />
+				</operation>
+				<operation name="getDomandaNido" type="synch-call" since="1.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.DomandaNido" />
+				</operation>
+				<operation name="getDomandaMaterna" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.DomandaMaterna" />
+				</operation>
+				<operation name="insertDomandaNido" type="synch-call"
+					since="1.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="domandaNido"
+							type="it.csi.iscritto.serviscritto.dto.domanda.DomandaNido" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.DomandaNido" />
+				</operation>
+				<operation name="insertDomandaMaterna" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="domandaMaterna"
+							type="it.csi.iscritto.serviscritto.dto.domanda.DomandaMaterna" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.DomandaMaterna" />
+				</operation>
+				<operation name="checkDomandaNido" type="synch-call"
+					since="1.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codiceFiscaleRic" type="java.lang.String" />
+						<param name="codiceFiscaleMin" type="java.lang.String" />
+					</param-list>
+					<ret-val type="void" />
+				</operation>
+				<operation name="checkDomandaMaterna" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codiceFiscaleRic" type="java.lang.String" />
+						<param name="codiceFiscaleMin" type="java.lang.String" />
+					</param-list>
+					<ret-val type="void" />
+				</operation>
+				<operation name="deleteDomanda" type="synch-call" since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="cfOperatore" type="java.lang.String" />
+					</param-list>
+					<ret-val type="void" />
+				</operation>
+				<operation name="getAllegato" type="synch-call" since="1.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="cfRichiedente" type="java.lang.String" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="idAllegato" type="java.lang.Long" />
+						<param name="withContent" type="boolean" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.Allegato" />
+				</operation>
+				<operation name="deleteAllegato" type="synch-call" since="1.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="cfRichiedente" type="java.lang.String" />
+						<param name="cfOperatore" type="java.lang.String" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="idAllegato" type="java.lang.Long" />
+					</param-list>
+					<ret-val type="java.lang.Integer" />
+				</operation>
+				<operation name="insertAllegatoList" type="synch-call"
+					since="1.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="cfRichiedente" type="java.lang.String" />
+						<param name="cfOperatore" type="java.lang.String" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="allegatoList"
+							type="it.csi.iscritto.serviscritto.dto.domanda.Allegato[]" />
+					</param-list>
+					<ret-val type="java.lang.Long[]" />
+				</operation>
+				<operation name="invioDomandaNido" type="synch-call"
+					since="1.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+					</param-list>
+					<ret-val type="java.lang.String" />
+				</operation>
+				<operation name="invioDomandaMaterna" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+					</param-list>
+					<ret-val type="java.lang.String" />
+				</operation>
+				<operation name="getDomandeIstruttoriaNidi" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="criterioRicerca"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CriterioRicercaIstruttoria" />
+						<param name="cfOperatore" type="java.lang.String" />
+						<param name="codProfilo" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.TestataDomandaIstruttoria[]" />
+				</operation>
+				<operation name="getDomandeIstruttoriaMaterne" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="criterioRicerca"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CriterioRicercaIstruttoria" />
+						<param name="cfOperatore" type="java.lang.String" />
+						<param name="codProfilo" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.TestataDomandaIstruttoria[]" />
+				</operation>
+				<operation name="insertLogErroreDomandaNido" type="synch-call"
+					since="1.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codiceFiscaleOperatore" type="java.lang.String" />
+						<param name="dettaglioErrore" type="java.lang.String" />
+						<param name="domandaNido"
+							type="it.csi.iscritto.serviscritto.dto.domanda.DomandaNido" />
+					</param-list>
+					<ret-val type="void" />
+				</operation>
+				<operation name="insertLogErroreDomandaMaterna" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codiceFiscaleOperatore" type="java.lang.String" />
+						<param name="dettaglioErrore" type="java.lang.String" />
+						<param name="domandaMaterna"
+							type="it.csi.iscritto.serviscritto.dto.domanda.DomandaMaterna" />
+					</param-list>
+					<ret-val type="void" />
+				</operation>
+				<operation name="checkIdDomanda" type="synch-call" since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codiceFiscaleRic" type="java.lang.String" />
+						<param name="idDomanda" type="java.lang.Long" />
+					</param-list>
+					<ret-val type="void" />
+				</operation>
+				<operation name="checkRichiedenteDomandaNido" type="synch-call"
+					since="1.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codiceFiscaleRic" type="java.lang.String" />
+						<param name="domandaNido"
+							type="it.csi.iscritto.serviscritto.dto.domanda.DomandaNido" />
+					</param-list>
+					<ret-val type="void" />
+				</operation>
+				<operation name="checkRichiedenteDomandaMaterna" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codiceFiscaleRic" type="java.lang.String" />
+						<param name="domandaMaterna"
+							type="it.csi.iscritto.serviscritto.dto.domanda.DomandaMaterna" />
+					</param-list>
+					<ret-val type="void" />
+				</operation>
+				<operation name="getStoricoCondizioniPunteggio" type="synch-call"
+					since="1.1.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="codCondizionePunteggio" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.DatiCondizionePunteggio[]" />
+				</operation>
+				<operation name="modificaCondizionePunteggioNidi" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="codCondizionePunteggio" type="java.lang.String" />
+						<param name="codiceFiscaleOperatore" type="java.lang.String" />
+						<param name="count" type="java.lang.Integer" />
+						<param name="datiCondizionePunteggio"
+							type="it.csi.iscritto.serviscritto.dto.domanda.DatiCondizionePunteggio" />
+					</param-list>
+					<ret-val type="void" />
+				</operation>
+				<operation name="modificaCondizionePunteggioMaterne" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="codCondizionePunteggio" type="java.lang.String" />
+						<param name="codiceFiscaleOperatore" type="java.lang.String" />
+						<param name="count" type="java.lang.Integer" />
+						<param name="datiCondizionePunteggio"
+							type="it.csi.iscritto.serviscritto.dto.domanda.DatiCondizionePunteggio" />
+					</param-list>
+					<ret-val type="void" />
+				</operation>
+				<operation name="getInfoAllegatiDomanda" type="synch-call"
+					since="1.1.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="codCondizionePunteggio" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.InfoAllegatoSoggetto[]" />
+				</operation>
+				<operation name="getInfoVerbaliNidi" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codProfilo" type="java.lang.String" />
+						<param name="tipoCommissione" type="java.lang.String" />
+						<param name="dataInizio" type="java.util.Date" />
+						<param name="dataFine" type="java.util.Date" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.VerbaleCommissione[]" />
+				</operation>
+				<operation name="getInfoVerbaliMaterne" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codProfilo" type="java.lang.String" />
+						<param name="tipoCommissione" type="java.lang.String" />
+						<param name="dataInizio" type="java.util.Date" />
+						<param name="dataFine" type="java.util.Date" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.VerbaleCommissione[]" />
+				</operation>
+				<operation name="getInfoGeneraliNidi" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.InfoGenerali" />
+				</operation>
+				<operation name="getInfoGeneraliMaterne" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.InfoGenerali" />
+				</operation>
+				<operation name="getDomandeNidoDaVerificare" type="synch-call"
+					since="1.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codProfilo" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.TestataDomandaDaVerificare[]" />
+				</operation>
+				<operation name="getDomandeMaternaDaVerificare" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codProfilo" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.TestataDomandaDaVerificare[]" />
+				</operation>
+				<operation name="getElencoNidi" type="synch-call" since="1.1.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.Nido[]" />
+				</operation>
+				<operation name="getElencoMaterne" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.Materna[]" />
+				</operation>
+				<operation name="modificaStatoNidi" type="synch-call"
+					since="1.1.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="elencoNidi"
+							type="it.csi.iscritto.serviscritto.dto.domanda.Nido[]" />
+					</param-list>
+					<ret-val type="void" />
+				</operation>
+				<operation name="modificaStatoMaterne" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="elencoMaterne"
+							type="it.csi.iscritto.serviscritto.dto.domanda.Materna[]" />
+					</param-list>
+					<ret-val type="void" />
+				</operation>
+				<operation name="getTestataDomandaAccettazione" type="synch-call"
+					since="1.1.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="cfRichiedente" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.TestataDomandaAccettazione" />
+				</operation>
+				<operation name="accettaPreferenzaNidi" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="cfRichiedente" type="java.lang.String" />
+						<param name="codScuola" type="java.lang.String" />
+						<param name="codTipoFrequenza" type="java.lang.String" />
+						<param name="cfOperatore" type="java.lang.String" />
+						<param name="telRichiedente" type="java.lang.String" />
+						<param name="codTipoPasto" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.TestataDomandaAccettazione" />
+				</operation>
+				<operation name="accettaPreferenzaMaterne" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="cfRichiedente" type="java.lang.String" />
+						<param name="codScuola" type="java.lang.String" />
+						<param name="codTipoFrequenza" type="java.lang.String" />
+						<param name="cfOperatore" type="java.lang.String" />
+						<param name="telRichiedente" type="java.lang.String" />
+						<param name="codTipoPasto" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.TestataDomandaAccettazione" />
+				</operation>
+				<operation name="rifiutaPreferenzaNidi" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="cfRichiedente" type="java.lang.String" />
+						<param name="codScuola" type="java.lang.String" />
+						<param name="codTipoFrequenza" type="java.lang.String" />
+						<param name="cfOperatore" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.TestataDomandaAccettazione" />
+				</operation>
+				<operation name="rifiutaPreferenzaMaterne" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="cfRichiedente" type="java.lang.String" />
+						<param name="codScuola" type="java.lang.String" />
+						<param name="codTipoFrequenza" type="java.lang.String" />
+						<param name="cfOperatore" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.TestataDomandaAccettazione" />
+				</operation>
+				<operation name="getParametriUltimaGraduatoriaNidi" type="synch-call"
+					since="1.2.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.ParametriGraduatoria" />
+				</operation>
+				<operation name="getParametriUltimaGraduatoriaMaterne"
+					type="synch-call" since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.ParametriGraduatoria" />
+				</operation>
+				<operation name="getElencoGraduatorieNidi" type="synch-call"
+					since="1.2.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.Graduatoria[]" />
+				</operation>
+				<operation name="getElencoGraduatorieMaterne" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.Graduatoria[]" />
+				</operation>
+				<operation name="getElencoStepGraduatoriaNidi" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codiceGraduatoria" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.StepGraduatoria[]" />
+				</operation>
+				<operation name="getElencoStepGraduatoriaMaterne" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codiceGraduatoria" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.StepGraduatoria[]" />
+				</operation>
+				<operation name="ricercaGraduatoria" type="synch-call"
+					since="1.2.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="filtroRicerca"
+							type="it.csi.iscritto.serviscritto.dto.domanda.RicercaGraduatorieFilter" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.TestataGraduatoria[]" />
+				</operation>
+				<operation name="getParametriGraduatoriaNidi" type="synch-call"
+					since="1.2.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codGraduatoria" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.ParametriGraduatoria" />
+				</operation>
+				<operation name="getParametriGraduatoriaMaterne" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codGraduatoria" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.ParametriGraduatoria" />
+				</operation>
+				<operation name="getDomandeNidoNonIstruite" type="synch-call"
+					since="1.3.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val type="java.lang.Long[]" />
+				</operation>
+				<operation name="getDomandeMaternaNonIstruite" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val type="java.lang.Long[]" />
+				</operation>
+				<operation name="getVerifichePreventivePendenti" type="synch-call"
+					since="1.3.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomande" type="java.lang.Long[]" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.InfoVerifiche[]" />
+				</operation>
+				<operation name="calcolaGraduatoria" type="synch-call"
+					since="1.3.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="parametri"
+							type="it.csi.iscritto.serviscritto.dto.domanda.ParametriCalcoloGraduatoria" />
+					</param-list>
+					<ret-val type="void" />
+				</operation>
+				<operation name="getElencoAnniScolastici" type="synch-call"
+					since="1.3.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.AnnoScolastico[]" />
+				</operation>
+				<operation name="getElencoClassiNido" type="synch-call"
+					since="1.3.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codScuola" type="java.lang.String" />
+						<param name="codAnnoScolastico" type="java.lang.String" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.Classe[]" />
+				</operation>
+				<operation name="getElencoClassiMaterna" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codScuola" type="java.lang.String" />
+						<param name="codAnnoScolastico" type="java.lang.String" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.Classe[]" />
+				</operation>
+				<operation name="insertClasseNido" type="synch-call"
+					since="1.3.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="classe"
+							type="it.csi.iscritto.serviscritto.dto.domanda.ClasseParam" />
+					</param-list>
+					<ret-val type="java.lang.Long" />
+				</operation>
+				<operation name="insertClasseMaterna" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="classe"
+							type="it.csi.iscritto.serviscritto.dto.domanda.ClasseParam" />
+					</param-list>
+					<ret-val type="java.lang.Long" />
+				</operation>
+				<operation name="updateClasseNido" type="synch-call"
+					since="1.3.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="classe"
+							type="it.csi.iscritto.serviscritto.dto.domanda.ClasseParam" />
+					</param-list>
+					<ret-val type="java.lang.Integer" />
+				</operation>
+				<operation name="updateClasseMaterna" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="classe"
+							type="it.csi.iscritto.serviscritto.dto.domanda.ClasseParam" />
+					</param-list>
+					<ret-val type="java.lang.Integer" />
+				</operation>
+				<operation name="deleteClasseNido" type="synch-call"
+					since="1.3.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idClasse" type="java.lang.Long" />
+					</param-list>
+					<ret-val type="java.lang.Integer" />
+				</operation>
+				<operation name="deleteClasseMaterna" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idClasse" type="java.lang.Long" />
+					</param-list>
+					<ret-val type="java.lang.Integer" />
+				</operation>
+				<operation name="getElencoNidiDse" type="synch-call"
+					since="1.4.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.Nido[]" />
+				</operation>
+				<operation name="getElencoMaterneDse" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.Materna[]" />
+				</operation>
+				<operation name="getResidenzeForzateNidi" type="synch-call"
+					since="1.4.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.InfoResidenzeForzate" />
+				</operation>
+				<operation name="getResidenzeForzateMaterne" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.InfoResidenzeForzate" />
+				</operation>
+				<operation name="getGraduatoriaCompletaNidi" type="synch-call"
+					since="1.4.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.GraduatoriaCompleta[]" />
+				</operation>
+				<operation name="getGraduatoriaCompletaMaterne" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.GraduatoriaCompleta[]" />
+				</operation>
+				<operation name="updateFlagAmmissioni" type="synch-call"
+					since="1.5.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idClasseList" type="java.lang.Long[]" />
+						<param name="value" type="java.lang.Boolean" />
+					</param-list>
+					<ret-val type="java.lang.Integer" />
+				</operation>
+				<operation name="getInfoStepGraduatorieNido" type="synch-call"
+					since="1.5.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.InfoStepGraduatoria[]" />
+				</operation>
+				<operation name="getInfoStepGraduatorieMaterna" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.InfoStepGraduatoria[]" />
+				</operation>
+				<operation name="getGraduatoriaApprovazioneNidi" type="synch-call"
+					since="1.5.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codiceGraduatoria" type="java.lang.String" />
+						<param name="step" type="java.lang.Integer" />
+						<param name="codiceStatoGraduatoria" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.GraduatoriaApprovazione[]" />
+				</operation>
+				<operation name="getGraduatoriaApprovazioneMaterne" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codiceGraduatoria" type="java.lang.String" />
+						<param name="step" type="java.lang.Integer" />
+						<param name="codiceStatoGraduatoria" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.GraduatoriaApprovazione[]" />
+				</operation>
+				<operation name="insertNidoFuoriTermine" type="synch-call"
+					since="1.6.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="cfOperatore" type="java.lang.String" />
+						<param name="codScuola" type="java.lang.String" />
+						<param name="codTipoFrequenza" type="java.lang.String" />
+					</param-list>
+					<ret-val type="void" />
+				</operation>
+				<operation name="insertMaternaFuoriTermine" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="cfOperatore" type="java.lang.String" />
+						<param name="codScuola" type="java.lang.String" />
+						<param name="codTipoFrequenza" type="java.lang.String" />
+					</param-list>
+					<ret-val type="void" />
+				</operation>
+				<operation name="generaRicevuta" type="synch-call" since="1.7.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idAllegato" type="java.lang.Long" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.RicevutaAllegato" />
+				</operation>
+				<operation name="generaRicevutaAccettazione" type="synch-call"
+					since="1.7.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="cfRichiedente" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.RicevutaAccettazione" />
+				</operation>
+				<operation name="getFasceEta" type="synch-call" since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.FasciaEta[]" />
+				</operation>
+				<operation name="getAnagraficaGraduatorie" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.AnagraficaGraduatoria[]" />
+				</operation>
+				<operation name="getAnagraficaGraduatoria" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codOrdineScuola" type="java.lang.String" />
+						<param name="codAnagraficaGraduatoria" type="java.lang.String" />
+						<param name="codAnnoScolastico" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.AnagraficaGraduatoria" />
+				</operation>
+				<operation name="insertAnagraficaGraduatoria" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="anagraficaGraduatoria"
+							type="it.csi.iscritto.serviscritto.dto.domanda.AnagraficaGraduatoria" />
+					</param-list>
+					<ret-val type="java.lang.Long" />
+				</operation>
+				<operation name="updateAnagraficaGraduatoria" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="anagraficaGraduatoria"
+							type="it.csi.iscritto.serviscritto.dto.domanda.AnagraficaGraduatoria" />
+					</param-list>
+					<ret-val type="java.lang.Integer" />
+				</operation>
+				<operation name="getAnagraficaStepGraduatoria" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codOrdineScuola" type="java.lang.String" />
+						<param name="codAnagraficaGraduatoria" type="java.lang.String" />
+						<param name="codAnnoScolastico" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.AnagraficaStepGraduatoria[]" />
+				</operation>
+				<operation name="insertAnagraficaStepGraduatoria" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="stepGraduatoria"
+							type="it.csi.iscritto.serviscritto.dto.domanda.AnagraficaStepGraduatoria" />
+					</param-list>
+					<ret-val type="java.lang.Long" />
+				</operation>
+				<operation name="updateAnagraficaStepGraduatoria" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="stepGraduatoria"
+							type="it.csi.iscritto.serviscritto.dto.domanda.AnagraficaStepGraduatoria" />
+					</param-list>
+					<ret-val type="java.lang.Integer" />
+				</operation>
+				<operation name="deleteAnagraficaStepGraduatoria" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idStepGra" type="java.lang.Long" />
+					</param-list>
+					<ret-val type="java.lang.Integer" />
+				</operation>
+				<operation name="getAnagraficaEta" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codOrdineScuola" type="java.lang.String" />
+						<param name="codAnagraficaGraduatoria" type="java.lang.String" />
+						<param name="codAnnoScolastico" type="java.lang.String" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.AnagraficaEta[]" />
+				</operation>
+				<operation name="insertAnagraficaEta" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="anagraficaEta"
+							type="it.csi.iscritto.serviscritto.dto.domanda.AnagraficaEta" />
+					</param-list>
+					<ret-val type="java.lang.Long" />
+				</operation>
+				<operation name="updateAnagraficaEta" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="anagraficaEta"
+							type="it.csi.iscritto.serviscritto.dto.domanda.AnagraficaEta" />
+					</param-list>
+					<ret-val type="java.lang.Integer" />
+				</operation>
+				<operation name="deleteAnagraficaEta" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idEta" type="java.lang.Long" />
+					</param-list>
+					<ret-val type="java.lang.Integer" />
+				</operation>
+				<operation name="getTipiFasceEta" type="synch-call" since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.TipoFasciaEta[]" />
+				</operation>
+				<operation name="getReportPostiLiberi" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="codOrdineScuola" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.RecordPostiLiberi[]" />
+				</operation>
+				<operation name="modificaStatoScuolaPreferenza" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idGraduatoria" type="java.lang.Long" />
+						<param name="idStatoAttuale" type="java.lang.Long" />
+						<param name="idStatoRipristino" type="java.lang.Long" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.domanda.Result" />
+				</operation>
+				<operation name="getPreferenzeScuole" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idAnagraficaGra" type="java.lang.Long" />
+						<param name="idDomanda" type="java.lang.Long" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.RecordPreferenzaScuola[]" />
+				</operation>
+				<operation name="getFlagBloccoGraduatoriaNidi" type="synch-call"
+					since="2.1.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val type="java.lang.Boolean" />
+				</operation>
+				<operation name="setFlagBloccoGraduatoriaNidi" type="synch-call"
+					since="2.1.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="value" type="java.lang.Boolean" />
+					</param-list>
+					<ret-val type="void" />
+				</operation>
+				<operation name="getFlagBloccoGraduatoriaMaterne" type="synch-call"
+					since="2.1.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val type="java.lang.Boolean" />
+				</operation>
+				<operation name="setFlagBloccoGraduatoriaMaterne" type="synch-call"
+					since="2.1.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="value" type="java.lang.Boolean" />
+					</param-list>
+					<ret-val type="void" />
+				</operation>
+				<operation name="getTestataDomandaAccettazioneMaterne"
+					type="synch-call" since="1.1.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+						<param name="idDomanda" type="java.lang.Long" />
+						<param name="cfRichiedente" type="java.lang.String" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.TestataDomandaAccettazione" />
+				</operation>
+				<operation name="getReportDomandeScuolaResidenza" type="synch-call"
+					since="2.0.0">
+					<param-list>
+						<param name="callerInfo"
+							type="it.csi.iscritto.serviscritto.dto.domanda.CallerInfoDomanda" />
+					</param-list>
+					<ret-val
+						type="it.csi.iscritto.serviscritto.dto.domanda.RecordDomandeScuolaResidenza[]" />
+				</operation>
+			</operations>
+		</service>
+	</services>
+	<config>
+		<url-pa>**not used**</url-pa>
+		<pluggable-pd-list chooser-class="it.csi.csi.porte.FixedDelegateChooser">
+			<pluggable-pd name="serviscritto.domanda.ejb"
+				class="it.csi.csi.porte.ejb20.PortaDelegataEJB" url-pa="@iscritto.serviscritto.domanda.pa.url@"
+				url-qm="serviscritto.ejb.ApplDomandaQMGR">
+			</pluggable-pd>
+		</pluggable-pd-list>
+		<pre-function-handler-list>
+
+		</pre-function-handler-list>
+		<post-function-handler-list>
+
+		</post-function-handler-list>
+		<queue-manager url="" />
+	</config>
+</porta-delegata>

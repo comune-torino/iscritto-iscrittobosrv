@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:cxf="http://cxf.apache.org/core"
+	   xmlns:http="http://cxf.apache.org/transports/http/configuration"
+	   xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xmlns:sec="http://cxf.apache.org/configuration/security"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+						   http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+						   http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd
+						   http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+						   http://cxf.apache.org/configuration/security http://cxf.apache.org/schemas/configuration/security.xsd">
+
+	<!-- DOMANDA -->
+	<bean id="domandaSrvBean" class="it.csi.iscritto.iscrittobosrv.integration.service.DomandaSrvBean">
+        <property name="serviceInterface">
+            <bean factory-method="getPdProxy"
+                  class="it.csi.iscritto.iscrittobosrv.integration.service.PdProxySpring2Factory">
+                <constructor-arg value="classpath:defpd_domanda.xml"></constructor-arg>
+                <constructor-arg value="it.csi.iscritto.serviscritto.interfacecsi.domanda.DomandaSrv"></constructor-arg>
+            </bean>
+        </property>
+    </bean>
+    
+    <!-- DOMANDA -->
+	<bean id="scuoleSrvBean" class="it.csi.iscritto.iscrittobosrv.integration.service.ScuoleSrvBean">
+        <property name="serviceInterface">
+            <bean factory-method="getPdProxy"
+                  class="it.csi.iscritto.iscrittobosrv.integration.service.PdProxySpring2Factory">
+                <constructor-arg value="classpath:defpd_scuole.xml"></constructor-arg>
+                <constructor-arg value="it.csi.iscritto.serviscritto.interfacecsi.scuole.ScuoleSrv"></constructor-arg>
+            </bean>
+        </property>
+    </bean>
+    
+    <bean id="profilazioneSrvBean" class="it.csi.iscritto.iscrittobosrv.integration.service.ProfilazioneSrvBean">
+        <property name="serviceInterface">
+            <bean factory-method="getPdProxy"
+                  class="it.csi.iscritto.iscrittobosrv.integration.service.PdProxySpring2Factory">
+                <constructor-arg value="classpath:defpd_profilazione.xml"></constructor-arg>
+                <constructor-arg value="it.csi.iscritto.serviscritto.interfacecsi.profilazione.ProfilazioneSrv"></constructor-arg>
+            </bean>
+        </property>
+    </bean>
+
+
+</beans>

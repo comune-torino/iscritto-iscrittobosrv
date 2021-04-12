@@ -1,0 +1,3092 @@
+swagger: '2.0'
+info:
+  title: Iscritto - backoffice API
+  description: API per il backend del modulo funzionae di backoffice del prodotto ISCRITTO.
+  version: 1.2.0
+host: 'mydevpc.csi.it:80'
+schemes:
+  - http
+basePath: /iscrittobosrvRest/be
+produces:
+  - application/json
+paths:
+  /ping:
+    get:
+      operationId: ping
+      summary: servizio di ping del backend
+      description: Restituisce una stringa per confermare la disponibilita' del backend
+      produces:
+        - plain/text
+      tags:
+        - backoffice
+      responses:
+        '200':
+          description: stringa di conferma funzionamento
+          schema:
+            type: string
+        default:
+          description: Unexpected error
+          schema:
+            type: string
+  /autorizzazione/localLogout:
+    get:
+      operationId: localLogout
+      summary: local logout
+      description: effettua il logout locale
+      tags:
+        - backoffice
+      responses:
+        200:
+          description: logout effettuato
+          schema:
+            type: string
+        default:
+          description: Unexpected error
+          schema:
+            type: string
+  /autorizzazione/currentUser:
+    get:
+      operationId: getCurrentUser
+      summary: servizio che recupera le info dell'utente applicativo loggato nel sistema
+      description: restituisce l'oggetto di info utente
+      produces:
+        - application/json
+      tags:
+        - Autorizzazione
+      responses:
+        '200':
+          description: Oggetto con le info dell'utente applicativo loggato
+          schema:
+            $ref: '#/definitions/UserInfo'
+        default:
+          description: nessun utente loggato
+          schema:
+            type: string
+  /autorizzazione/currentUser/elenco-autorizzazioni:
+    get:
+      operationId: getAutorizzazioniUtenteCorrente
+      summary: servizio che recupera l'insieme delle proprie autorizzazioni applicative (macrofunzioni, attivita')
+      description: restituisce l'oggetto che mappa le autorizzazioni
+      produces:
+        - application/json
+      tags:
+        - Autorizzazione
+      responses:
+        '200':
+          description: Oggetto con le info dell'utente applicativo loggato
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Funzione'
+        '404':
+          description: nessuna abilitazione trovata
+          schema:
+            $ref: '#/definitions/SrvError'
+  /autorizzazione/currentUser/elenco-profili:
+    get:
+      operationId: getProfiliUtenteCorrente
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Autorizzazione
+      responses:
+        '200':
+          description: oggetto che rappresenta il Profilo utente
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Profilo'
+        '404':
+          description: profilo non trovato per codice fiscale
+          schema:
+            $ref: '#/definitions/SrvError'
+  /autorizzazione/elenco-funzioni/{cf}:
+    get:
+      operationId: getElencoFunzioniByCF
+      summary: servizio che recupera l'elenco di funzioni abilitate dell'utente
+      description: restituisce l'elenco di funzioni abilitate per l'utente
+      produces:
+        - application/json
+      tags:
+        - Autorizzazione
+      parameters:
+        - name: cf
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: la lista delle funzione abilitate
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Funzione'
+        '404':
+          description: Utente privo di abilitazioni
+          schema:
+            $ref: '#/definitions/SrvError'
+  /autorizzazione/elenco-attivita/{codiceFiscale}/{codiceFunzione}:
+    get:
+      operationId: getElencoAttivitaByCodiceFiscaleAndCodiceFunzione
+      summary: servizio che recupera l'elenco di attivita abilitate dell'utente per la funzione indicata
+      description: restituisce l'elenco di attivita abilitate per l'utente
+      produces:
+        - application/json
+      tags:
+        - Autorizzazione
+      parameters:
+        - name: codiceFiscale
+          in: path
+          type: string
+          required: true
+        - name: codiceFunzione
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: la lista delle attivita abilitate
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Attivita'
+        '404':
+          description: Utente privo di abilitazioni
+          schema:
+            $ref: '#/definitions/SrvError'
+  /autorizzazione/elenco-condizioni-punteggio/{codiceFiscale}/{tipoIstruttoria}:
+    get:
+      operationId: getCondizioniPunteggio
+      summary: servizio che recupera l'elenco delle condizioni di punteggio
+      description: restituisce l'elenco delle condizioni di punteggio
+      produces:
+        - application/json
+      tags:
+        - Autorizzazione
+      parameters:
+        - name: codiceFiscale
+          in: path
+          type: string
+          required: true
+        - name: tipoIstruttoria
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description: l'elenco delle condizioni di punteggio abilitate
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CondizionePunteggio'
+        '404':
+          description: Utente privo di abilitazioni
+          schema:
+            $ref: '#/definitions/SrvError'
+  /autorizzazione/operatore:
+    get:
+      operationId: checkOperatore
+      summary: servizio che verifica se l'utente in sessione e' presente in anagrafica
+      description: servizio che verifica se l'utente in sessione e' presente in anagrafica
+      produces:
+        - application/json
+      tags:
+        - Autorizzazione
+      responses:
+        '200':
+          description: utente in sessione presente in anagrafica
+          schema:
+            type: string
+        '404':
+          description: utente non presente in anagrafica
+          schema:
+            $ref: '#/definitions/SrvError'
+  /allegati/{idDomanda}/{idAllegato}/{cfRichiedente}:
+    get:
+      summary: "Download allegato"
+      description: "Download allegato"
+      operationId: "downloadAllegato"
+      produces:
+      - "application/octet-stream"
+      parameters:
+      - name: "idDomanda"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "idAllegato"
+        in: "path"
+        required: true
+        type: "integer"
+        format: "int64"
+      - name: "cfRichiedente"
+        in: "path"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Allegato"
+  /allegati/{idDomanda}/{idSoggetto}/{codTipologia}/{cfRichiedente}/{cfOperatore}:
+    post:
+      summary: "Upload di un allegato nei formati previsti"
+      description: "Upload di un allegato nei formati previsti"
+      operationId: "uploadAllegato"
+      consumes:
+      - "multipart/form-data"
+      produces:
+      - "application/json"
+      tags:
+        - Allegati
+      parameters:
+      - name: "idDomanda"
+        in: "path"
+        required: true
+        type: integer
+        format: int64
+      - name: "idSoggetto"
+        in: "path"
+        required: true
+        type: integer
+        format: int64
+      - name: "codTipologia"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "cfRichiedente"
+        in: "path"
+        required: true
+        type: "string"
+      - name: "cfOperatore"
+        in: "path"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        required: false
+        schema:
+          $ref: "#/definitions/MultipartFormDataInput"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Documento"
+  /domande:
+    get:
+      operationId: getDomande
+      summary: servizio di ricerca domande sulla base di un criterio di ricerca
+      description: restituisce elenco identificativi delle domande che soddisfano il criterio impostato
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - in: query
+          name: filter
+          type: string
+          description: 'filtro (rif. tipo: DomandeFilter)'
+      responses:
+        '200':
+          description: elenco delle domande che soddisfano il filtro di ricerca o array vuoto se nessun elemento soddisfa i criteri
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TestataDomanda'
+        '400':
+          description: filtro di ricerca compilato erroneamente
+          schema:
+            $ref: '#/definitions/SrvError'
+        default:
+          description: errore generico
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/info:
+    get:
+      operationId: getInfoGenerali
+      summary: servizio che restituisce informazioni generali
+      description: servizio che restituisce informazioni generali
+      produces:
+        - application/json
+      tags:
+        - Domande
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/InfoGenerali'
+        default:
+          description: errore generico
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/istruttoria:
+    get:
+      operationId: getDomandeIstruttoria
+      summary: servizio di ricerca domande sulla base di un criterio di ricerca
+      description: restituisce l'elenco delle domande che soddisfano il criterio impostato
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - in: query
+          name: filter
+          type: string
+          description: 'filtro (rif. tipo: DomandeFilter)'
+      responses:
+        '200':
+          description: elenco delle domande che soddisfano il filtro di ricerca o array vuoto se nessun elemento soddisfa i criteri
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TestataDomandaIstruttoria'
+        '400':
+          description: filtro di ricerca compilato erroneamente
+          schema:
+            $ref: '#/definitions/SrvError'
+        default:
+          description: errore generico
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/anagrafica/graduatorie:
+    get:
+      operationId: getAnagraficaGraduatorie
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      responses:
+        '200':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/AnagraficaGraduatoria"
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/anagrafica/graduatoria/ordine-scuola/{codOrdineScuola}/codice-anagrafica/{codAnagraficaGra}/anno/{codAnnoScolastico}:
+    get:
+      operationId: getAnagraficaGraduatoria
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+      - name: "codOrdineScuola"
+        in: "path"
+        required: true
+        type: string
+      - name: "codAnagraficaGra"
+        in: "path"
+        required: true
+        type: string
+      - name: "codAnnoScolastico"
+        in: "path"
+        required: true
+        type: string
+      responses:
+        '200':
+          schema:
+            $ref: "#/definitions/AnagraficaGraduatoria"
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/anagrafica/graduatoria/nuova-graduatoria:
+    post:
+      operationId: insertAnagraficaGraduatoria
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/AnagraficaGraduatoria'
+      responses:
+        '200':
+          description:
+          schema:
+            type: integer
+            format: int64
+        '404':
+          description:
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/anagrafica/graduatoria/modifica-graduatoria:
+    put:
+      operationId: updateAnagraficaGraduatoria
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/AnagraficaGraduatoria'
+      responses:
+        '200':
+          description:
+          schema:
+            type: integer
+        '404':
+          description:
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/anagrafica/step/graduatoria/ordine-scuola/{codOrdineScuola}/codice-anagrafica/{codAnagraficaGra}/anno/{codAnnoScolastico}:
+    get:
+      operationId: getElencoAnagraficaStepGraduatoria
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+      - name: "codOrdineScuola"
+        in: "path"
+        required: true
+        type: string
+      - name: "codAnagraficaGra"
+        in: "path"
+        required: true
+        type: string
+      - name: "codAnnoScolastico"
+        in: "path"
+        required: true
+        type: string
+      responses:
+        '200':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/AnagraficaStepGraduatoria"
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/anagrafica/graduatoria/nuovo-step-graduatoria:
+    post:
+      operationId: insertAnagraficaStepGraduatoria
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/AnagraficaStepGraduatoria'
+      responses:
+        '200':
+          description:
+          schema:
+            type: integer
+            format: int64
+        '404':
+          description:
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/anagrafica/graduatoria/modifica-step-graduatoria:
+    put:
+      operationId: updateAnagraficaStepGraduatoria
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/AnagraficaStepGraduatoria'
+      responses:
+        '200':
+          description:
+          schema:
+            type: integer
+        '404':
+          description:
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/anagrafica/graduatoria/elimina-step-graduatoria/{idStepGra}:
+    delete:
+      operationId: deleteAnagraficaStepGraduatoria
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - name: idStepGra
+          in: path
+          type: integer
+          format: int64
+          required: true
+      responses:
+        '200':
+          schema:
+            type: integer
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/anagrafica/eta/ordine-scuola/{codOrdineScuola}/codice-anagrafica/{codAnagraficaGra}/anno/{codAnnoScolastico}:
+    get:
+      operationId: getAnagraficaEta
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+      - name: "codOrdineScuola"
+        in: "path"
+        required: true
+        type: string
+      - name: "codAnagraficaGra"
+        in: "path"
+        required: true
+        type: string
+      - name: "codAnnoScolastico"
+        in: "path"
+        required: true
+        type: string
+      responses:
+        '200':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/AnagraficaEta"
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/anagrafica/eta/tipi-fasce-eta:
+    get:
+      operationId: getTipiFasceEta
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      responses:
+        '200':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/TipoFasciaEta"
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/anagrafica/eta/nuova-anagrafica-eta:
+    post:
+      operationId: insertAnagraficaEta
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/AnagraficaEta'
+      responses:
+        '200':
+          description:
+          schema:
+            type: integer
+            format: int64
+        '404':
+          description:
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/anagrafica/eta/modifica-anagrafica-eta:
+    put:
+      operationId: updateAnagraficaEta
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/AnagraficaEta'
+      responses:
+        '200':
+          description:
+          schema:
+            type: integer
+        '404':
+          description:
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/anagrafica/eta/elimina-anagrafica-eta/{idEta}:
+    delete:
+      operationId: deleteAnagraficaEta
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - name: idEta
+          in: path
+          type: integer
+          format: int64
+          required: true
+      responses:
+        '200':
+          schema:
+            type: integer
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/nido/da-verificare:
+    get:
+      operationId: getDomandeNidoDaVerificare
+      summary: servizio che restituisce l'elenco delle domande da verificare
+      description: servizio che restituisce l'elenco delle domande da verificare
+      produces:
+        - application/json
+      tags:
+        - Domande
+      responses:
+        '200':
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/TestataDomandaDaVerificare'
+        default:
+          description: errore generico
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/domanda/{idDomanda}/nidi:
+    get:
+      operationId: getElencoNidi
+      summary: servizio che restituisce l'elenco dei nidi di preferenza
+      description: servizio che restituisce l'elenco dei nidi di preferenza
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - name: idDomanda
+          in: path
+          type: integer
+          format: int64
+          required: true
+      responses:
+        '200':
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Nido'
+        '404':
+          description: domanda di iscrizione non trovata per identificativo
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/domanda/{idDomanda}/nidi/stato:
+    post:
+      operationId: modificaStatoNidi
+      summary: servizio per la modifica dello stato nidi
+      description: servizio per la modifica dello stato nidi
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - name: idDomanda
+          in: path
+          type: integer
+          format: int64
+          required: true
+        - in: body
+          name: body
+          required: true
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Nido'
+      responses:
+        '200':
+          schema:
+            type: string
+        '404':
+          description: domanda di iscrizione non trovata per identificativo
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/stati:
+    get:
+      operationId: getElencoStatiDomanda
+      summary: servizio che restituisce l'elenco di stati che una domanda di iscrizione puo' assumere nel contesto del Bckoffice
+      description: servizio che restituisce l'elenco di stati che una domanda di iscrizione puo' assumere nel contesto del Bckoffice
+      produces:
+        - application/json
+      tags:
+        - Domande
+      responses:
+        '200':
+          description: elenco degli stati possibili di una domanda di iscrizione (nidi o matrne non ci sono differenze)
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/StatoDomanda'
+        '400':
+          description: filtro di ricerca compilato erroneamente
+          schema:
+            $ref: '#/definitions/SrvError'
+        default:
+          description: errore generico
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/testataDomanda/{idDomanda}:
+    get:
+      operationId: getTestataDomandaById
+      summary: servizio che restituisce una testata di informazioni di una domanda di iscrizione
+      description: restituisce una testata di informazioni di una domanda di iscrizione
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - name: idDomanda
+          in: path
+          type: integer
+          format: int64
+          required: true
+      responses:
+        '200':
+          description: la testata di informazioni di una domanda di iscrizione
+          schema:
+            $ref: '#/definitions/TestataDomanda'
+        '404':
+          description: domanda di iscrizione non trovata per identificativo
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/domanda/{idDomanda}:
+    get:
+      operationId: getDomanda
+      summary: servizio che restituisce il dettaglio di una domanda di iscrizione
+      description: restituisce il dettaglio di una domanda di iscrizione
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - name: idDomanda
+          in: path
+          type: integer
+          format: int64
+          required: true
+      responses:
+        '200':
+          description: la domanda di iscrizione in dettaglio
+          schema:
+            $ref: '#/definitions/DomandaNido'
+        '404':
+          description: domanda di iscrizione non trovata per identificativo
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/domanda/{idDomanda}/istruttoria/condizioni/punteggio/{condizionePunteggio}/storico:
+    get:
+      operationId: getStoricoCondizioniPunteggio
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - name: idDomanda
+          in: path
+          type: integer
+          format: int64
+          required: true
+        - name: condizionePunteggio
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description:
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/DatiCondizionePunteggio'
+        '404':
+          description:
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/domanda/{idDomanda}/istruttoria/condizioni/punteggio/{condizionePunteggio}/modifica/{count}:
+    post:
+      operationId: modificaCondizionePunteggio
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - name: idDomanda
+          in: path
+          type: integer
+          format: int64
+          required: true
+        - name: condizionePunteggio
+          in: path
+          type: string
+          required: true
+        - name: count
+          in: path
+          type: integer
+          format: int32
+          required: true
+        - in: body
+          name: body
+          required: false
+          schema:
+            $ref: '#/definitions/DatiCondizionePunteggio'
+      responses:
+        '200':
+          description:
+          schema:
+            type: string
+        '404':
+          description:
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/domanda/{idDomanda}/istruttoria/condizioni/punteggio/{condizionePunteggio}/allegati:
+    get:
+      operationId: getInfoAllegatiDomanda
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - name: idDomanda
+          in: path
+          type: integer
+          format: int64
+          required: true
+        - name: condizionePunteggio
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          description:
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/InfoAllegatoSoggetto'
+        '404':
+          description:
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/istruttoria/verbali/commissione/{tipoCommissione}:
+    get:
+      operationId: getInfoVerbali
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - name: tipoCommissione
+          in: path
+          type: string
+          required: true
+        - name: dataInizio
+          in: query
+          type: string
+          required: true
+        - name: dataFine
+          in: query
+          type: string
+          required: true
+      responses:
+        '200':
+          description:
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/VerbaleCommissione'
+        '404':
+          description:
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/nido/graduatorie/graduatoria/anagrafica/ultima:
+    get:
+      operationId: getParametriUltimaGraduatoria
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/ParametriGraduatoria'
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/nido/graduatorie/graduatoria/anagrafica/{codiceGraduatoria}:
+    get:
+      operationId: getParametriGraduatoria
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - name: codiceGraduatoria
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          schema:
+            $ref: '#/definitions/ParametriGraduatoria'
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/nido/anagrafica-graduatorie:
+    get:
+      operationId: getElencoGraduatorieNidi
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      responses:
+        '200':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Graduatoria"
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/nido/graduatorie/graduatoria/anagrafica/{codiceGraduatoria}/step:
+    get:
+      operationId: getElencoStepGraduatoria
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - name: codiceGraduatoria
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/StepGraduatoria"
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/nido/graduatorie/info-step:
+    get:
+      operationId: getInfoStepGraduatorieNido
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      responses:
+        '200':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/InfoStepGraduatoria"
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/nido/graduatorie:
+    get:
+      operationId: ricercaGraduatorieNidi
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - in: query
+          name: filter
+          type: string
+          required: true
+      responses:
+        '200':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/TestataGraduatoria"
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/nido/graduatorie/dse:
+    get:
+      operationId: ricercaGraduatorieNidiDse
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - in: query
+          name: filter
+          type: string
+          required: true
+      responses:
+        '200':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/TestataGraduatoria"
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/nido/graduatorie/graduatoria/calcolo/info:
+    get:
+      operationId: getInfoCalcoloGraduatoria
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      responses:
+        '200':
+          schema:
+            $ref: "#/definitions/InfoCalcoloGraduatoria"
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/nido/graduatorie/graduatoria/calcolo:
+    post:
+      operationId: calcolaGraduatoria
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/ParametriCalcoloGraduatoria'
+      responses:
+        '200':
+          schema:
+            type: string
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/graduatorie/anni-scolastici:
+    get:
+      operationId: getElencoAnniScolastici
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      responses:
+        '200':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/AnnoScolastico"
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/nido/graduatorie/report/residenze-forzate:
+    get:
+      operationId: getResidenzeForzateNidi
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      responses:
+        '200':
+          schema:
+            $ref: "#/definitions/InfoResidenzeForzate"
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/nido/graduatorie/report/graduatoria-completa:
+    get:
+      operationId: getGraduatoriaCompletaNidi
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      responses:
+        '200':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/GraduatoriaCompleta"
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/nido/graduatoria/{codiceGraduatoria}/step/{step}/stato-graduatoria/{codiceStatoGraduatoria}/report/graduatoria-approvazione:
+    get:
+      operationId: getGraduatoriaApprovazioneNidi
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - name: codiceGraduatoria
+          in: path
+          type: string
+          required: true
+        - name: step
+          in: path
+          type: integer
+          required: true
+        - name: codiceStatoGraduatoria
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/GraduatoriaApprovazione"
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/graduatorie/report/elenco-posti:
+    get:
+      operationId: getReportPostiLiberi
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      responses:
+        '200':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/RecordPostiLiberi"
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/graduatorie/modifica-stato-scuola-preferenza/graduatoria/{idGraduatoria}/stato-attuale/{idStatoAttuale}/stato-ripristino/{idStatoRipristino}:
+    post:
+      operationId: modificaStatoScuolaPreferenza
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - name: idGraduatoria
+          in: path
+          type: integer
+          format: int64
+          required: true
+        - name: idStatoAttuale
+          in: path
+          type: integer
+          format: int64
+          required: true
+        - name: idStatoRipristino
+          in: path
+          type: integer
+          format: int64
+          required: true
+      responses:
+        '200':
+          description:
+          schema:
+            $ref: '#/definitions/Result'
+        '404':
+          description:
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/graduatorie/preferenze-scuole/{idAnagraficaGra}/domanda/{idDomanda}:
+    get:
+      operationId: getPreferenzeScuole
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - name: idAnagraficaGra
+          in: path
+          type: integer
+          format: int64
+          required: true
+        - name: idDomanda
+          in: path
+          type: integer
+          format: int64
+          required: true
+      responses:
+        '200':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/RecordPreferenzaScuola"
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/nido/scuola/{codScuola}/anno/{codAnno}/classi:
+    get:
+      operationId: getElencoClassiNido
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - name: codScuola
+          in: path
+          type: string
+          required: true
+        - name: codAnno
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Classe"
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/nido/scuole/classi/nuova-classe:
+    post:
+      operationId: insertClasseNido
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/ClasseParam'
+      responses:
+        '200':
+          schema:
+            type: integer
+            format: int64
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/nido/scuole/classi:
+    put:
+      operationId: updateClasseNido
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/ClasseParam'
+      responses:
+        '200':
+          schema:
+          type: integer
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/nido/scuole/classi/{idClasse}:
+    delete:
+      operationId: deleteClasseNido
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - name: idClasse
+          in: path
+          type: integer
+          format: int64
+          required: true
+      responses:
+        '200':
+          schema:
+          type: integer
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/nido/scuole/classi/ammissioni:
+    put:
+      operationId: updateFlagAmmissioni
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/AmmissioniParam'
+      responses:
+        '200':
+          schema:
+          type: integer
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /domande/nido/domanda/{idDomanda}/scuola/{codScuola}/tempo/{codTipoFrequenza}:
+    post:
+      operationId: insertNidoFuoriTermine
+      summary:
+      description:
+      produces:
+        - application/json
+      tags:
+        - Domande
+      parameters:
+        - name: idDomanda
+          in: path
+          type: integer
+          format: int64
+          required: true
+        - name: codScuola
+          in: path
+          type: string
+          required: true
+        - name: codTipoFrequenza
+          in: path
+          type: string
+          required: true
+      responses:
+        '200':
+          schema:
+            type: string
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+  /scuole/nido:
+    get:
+      operationId: getScuoleNido
+      summary:
+      description:
+      produces:
+      - "application/json"
+      tags:
+        - Scuole
+      parameters:
+        - in: query
+          name: dataNascita
+          type: string
+          description: 'filtro (rif. tipo: ScuoleFilter)'
+      responses:
+        '200':
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/InfoScuola"
+        '404':
+          schema:
+            $ref: '#/definitions/SrvError'
+        default:
+          description: errore generico
+          schema:
+            $ref: '#/definitions/SrvError'
+  /scuole/currentUser:
+    get:
+      summary: "Servizio che restituisce un elenco di scuole filtrato per parametri (le scuole su cui puo' operare l'utente loggato)"
+      description: "Servizio che restituisce un elenco di scuole filtrato per parametri (le scuole su cui puo' operare l'utente loggato)"
+      operationId: "getScuoleByUtente"
+      produces:
+      - "application/json"
+      tags:
+        - Scuole
+      parameters:
+        - in: query
+          name: filter
+          type: string
+          description: 'filtro (rif. tipo: ScuoleFilter)'
+      responses:
+        '200':
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/InfoScuola"
+        '400':
+          description: filtro di ricerca compilato erroneamente
+          schema:
+            $ref: '#/definitions/SrvError'
+        default:
+          description: errore generico
+          schema:
+            $ref: '#/definitions/SrvError'
+definitions:
+  Allegato:
+    type: "object"
+    properties:
+      idAllegato:
+        type: "integer"
+        format: "int64"
+      documento:
+        type: "string"
+        format: "byte"
+      protocollo:
+        type: "string"
+      idAnagraficaSoggetto:
+        type: "integer"
+        format: "int64"
+      codTipoAllegato:
+        type: "string"
+      dataInserimento:
+        type: "string"
+        format: "date-time"
+      nomeFile:
+        type: "string"
+      mimeType:
+        type: "string"
+  UserInfo:
+    type: object
+    properties:
+      nome:
+        type: string
+        description: nome dell'utente
+      cognome:
+        type: string
+        description: cognome dell'utente
+      codFisc:
+        type: string
+        description: codice fiscale dell'utente
+      ente:
+        type: string
+        description: nome dell'ente
+      ruolo:
+        type: string
+        description: nome del ruolo dell'utente
+      codRuolo:
+        type: string
+        description: codice del ruolo dell'utente
+      idIride:
+        type: string
+        description: ID iride dell'utente
+  StatoDomanda:
+    type: object
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: identificativo dello stato domnada (chiave artificiale)
+      codice:
+        type: string
+        description: identificativo dello stato della domanda (chiave naturale)
+      descrizione:
+        type: string
+        description: descrizione dello stato della domanda
+  Profilo:
+    type: object
+    properties:
+      codice:
+        type: string
+        description: identificativo
+      descrizione:
+        type: string
+        description: descrizione del profilo
+  Funzione:
+    type: object
+    properties:
+      codice:
+        type: string
+        description: identificativo
+      descrizione:
+        type: string
+        description: descrizione della funzione
+      link:
+        type: string
+        description: link relativo al contesto web applicativo della funzione
+      attivita:
+        type: array
+        items:
+          $ref: '#/definitions/Attivita'
+        description: insieme della attivita ammesse sulla funzione
+  Attivita:
+    type: object
+    properties:
+      codice:
+        type: string
+        description: identificativo della attivita
+      codiceFunzione:
+        type: string
+        description: identificativo della funzione di appartenenza
+      descrizione:
+        type: string
+        description: descrizione della attivita
+      link:
+        type: string
+        description: link relativo al contesto web applicativo della funzione
+      privilegi:
+        type: array
+        items:
+          $ref: '#/definitions/Privilegio'
+        description: insieme dei privilegi
+  Privilegio:
+    type: object
+    properties:
+      codice:
+        type: string
+        description: identificativo
+      descrizione:
+        type: string
+        description: descrizione del privilegio
+  DatiCondizionePunteggio:
+    type: object
+    properties:
+      idDomandaIscrizione:
+        type: integer
+        format: int64
+      codCondizionePunteggio:
+        type: string
+        description:
+      validata:
+        type: string
+        description:
+      tipoValidazione:
+        type: string
+        description:
+      note:
+        type: string
+        description:
+      dataInizioValidita:
+        type: string
+        description:
+      dataFineValidita:
+        type: string
+        description:
+      ricorrenza:
+        type: integer
+        description:
+      nomeOperatore:
+        type: string
+        description:
+      cognomeOperatore:
+        type: string
+        description:
+  TestataDomanda:
+    type: object
+    properties:
+      idDomandaIscrizione:
+        type: integer
+        format: int64
+        description: identificativo della domanda (chiave artificiale)
+      idSoggettoMinore:
+        type: integer
+        format: int64
+        description: identificativo del soggetto minore della domanda di iscrizione
+      protocolloDomandaIscrizione:
+        type: string
+        description: identificativo della domanda (numero di protocollo)
+      codiceFiscaleMinore:
+        type: string
+        description: codice fiscale del minore
+      cognomeMinore:
+        type: string
+        description: cognome del minore
+      nomeMinore:
+        type: string
+        description: nome del minore
+      statoDomandaCodice:
+        type: string
+        description: stato della domanda di iscrizione (codice)
+      statoDomandaDescrizione:
+        type: string
+        description: stato della domanda di iscrizione(descrizione)
+      dataUltimaModifica:
+        type: string
+        description: data dell'ultima modifica da backoffice
+      cognomeUtenteUltimaModifica:
+        type: string
+        description: cognome dell'utente autore dell'ultima modifica da backoffice
+      nomeUtenteUltimaModifica:
+        type: string
+        description: nome dell'utente autore dell'ultima modifica da backoffice
+  TestataDomandaIstruttoria:
+    type: object
+    properties:
+      idDomandaIscrizione:
+        type: integer
+        format: int64
+        description: identificativo della domanda (chiave artificiale)
+      protocolloDomandaIscrizione:
+        type: string
+        description: identificativo della domanda (numero di protocollo)
+      cognomeMinore:
+        type: string
+        description: cognome del minore
+      nomeMinore:
+        type: string
+        description: nome del minore
+      statoDomandaCodice:
+        type: string
+        description: stato della domanda di iscrizione (codice)
+      dataConsegna:
+        type: string
+        description: data consegna
+      dataUltimaModifica:
+        type: string
+        description: data dell'ultima modifica da backoffice
+      indirizzo:
+        type: string
+        description: indirizzo nido prima scelta
+      ricorrenza:
+        type: integer
+        description: ricorrenza
+      codStatoValidazione:
+        type: string
+        description: codStatoValidazione
+  SrvError:
+    type: object
+    properties:
+      status:
+        type: integer
+        description: status code HTTP (obbligatorio)
+      code:
+        type: string
+        description: codice di errore applicativo (obbligatorio)
+      title:
+        type: string
+        description: stringa che descrive in maniera succinta l'errore
+      detail:
+        type: string
+        description: oggetto che descrive piu' in dettaglio il motivo dell'errore
+      links:
+        type: string
+        description: lista di URI (stringhe) che possono essere di utilita' al client per la comprensions/gestione degli errori
+  DomandeFilter:
+    type: object
+    description: filtro per la risorsa /domande (GET). E' possibile filtrare per codice fiscale, opppure per cognome e/o nome (almeno due caratteri), oppure per scuola (obbl) e stato domanda (opz)
+    properties:
+      codiceFiscaleMinore:
+        type: string
+      cognomeMinore:
+        type: string
+      nomeMinore:
+        type: string
+      codiceScuola:
+        type: string
+      codiceStatoDomanda:
+        type: string
+      codiceCondizionePunteggio:
+        type: string
+      dataInizio:
+        type: string
+      dataFine:
+        type: string
+      statoCondizionePunteggio:
+        type: string
+        enum: [ALL, DAI, CON, INV]
+      protocollo:
+        type: string
+  InfoScuola:
+    type: "object"
+    properties:
+      codScuola:
+        type: "string"
+      descrizione:
+        type: "string"
+      indirizzo:
+        type: "string"
+      codCategoriaScuola:
+        type: "string"
+      descCategoriaScuola:
+        type: "string"
+      codOrdineScuola:
+        type: "string"
+      descOrdineScuola:
+        type: "string"
+      codCircoscrizione:
+        type: "string"
+      descCircoscrizione:
+        type: "string"
+      annoScolastico:
+        type: "string"
+      alert:
+        type: "boolean"
+      tempoBreve:
+        type: "boolean"
+      tempoLungo:
+        type: "boolean"
+      tempoIntermedio:
+        type: "boolean"
+  ScuoleFilter:
+    type: object
+    description: filtro per la risorsa /scuole (GET). E' possibile filtrare per codice tipologia scuola (nidi o materne)
+    properties:
+      codiceTipologiaScuola:
+        type: string
+        enum: [NID, MAT]
+  AnagraficaComponente:
+    type: "object"
+    properties:
+      nome:
+        type: "string"
+      cognome:
+        type: "string"
+      codiceFiscale:
+        type: "string"
+      dataNascita:
+        type: "string"
+      oraMinutiNascita:
+        type: "string"
+      sesso:
+        type: "string"
+  ComponenteFamiglia:
+    type: "object"
+    properties:
+      anagrafica:
+        $ref: "#/definitions/AnagraficaComponente"
+      luogoNascita:
+        $ref: "#/definitions/LuogoNascitaComponente"
+      iscrizioneNido:
+        type: "boolean"
+      iscrizioneMaterna:
+        type: "boolean"
+      numeroIndividuale:
+        type: "string"
+      anni:
+        type: "integer"
+        format: "int32"
+      richiedente:
+        type: "boolean"
+      coniugeRichiedente:
+        type: "boolean"
+      numeroIndividualeConiuge:
+        type: "string"
+  DettaglioFamiglia:
+    type: "object"
+    properties:
+      richiedente:
+        $ref: "#/definitions/ComponenteFamiglia"
+      coniuge:
+        $ref: "#/definitions/ComponenteFamiglia"
+      maggiorenni:
+        type: "array"
+        items:
+          $ref: "#/definitions/ComponenteFamiglia"
+      minorenni:
+        type: "array"
+        items:
+          $ref: "#/definitions/ComponenteFamiglia"
+      residenzaFamiglia:
+        $ref: "#/definitions/ResidenzaFamiglia"
+  LuogoNascitaComponente:
+    type: "object"
+    properties:
+      codNazione:
+        type: "string"
+      descNazione:
+        type: "string"
+      codRegione:
+        type: "string"
+      descRegione:
+        type: "string"
+      codProvincia:
+        type: "string"
+      descProvincia:
+        type: "string"
+      codComune:
+        type: "string"
+      descComune:
+        type: "string"
+  ResidenzaFamiglia:
+    type: "object"
+    properties:
+      codNazione:
+        type: "string"
+      descNazione:
+        type: "string"
+      codRegione:
+        type: "string"
+      descRegione:
+        type: "string"
+      codProvincia:
+        type: "string"
+      descProvincia:
+        type: "string"
+      codComune:
+        type: "string"
+      descComune:
+        type: "string"
+      cap:
+        type: "integer"
+        format: "int32"
+      indirizzo:
+        type: "string"
+      idCircoscrizione:
+        type: "integer"
+        format: "int32"
+      descCircoscrizione:
+        type: "string"
+  Comune:
+    type: "object"
+    properties:
+      codice:
+        type: "string"
+      descrizione:
+        type: "string"
+  Provincia:
+    type: "object"
+    properties:
+      codice:
+        type: "string"
+      descrizione:
+        type: "string"
+  Regione:
+    type: "object"
+    properties:
+      codice:
+        type: "string"
+      descrizione:
+        type: "string"
+  Stato:
+    type: "object"
+    properties:
+      codice:
+        type: "string"
+      descrizione:
+        type: "string"
+  Affido:
+    type: "object"
+    properties:
+      stato:
+        type: "boolean"
+      soggetti:
+        type: "array"
+        items:
+          $ref: "#/definitions/SoggettoAffido"
+  AltriComponenti:
+    type: "object"
+    properties:
+      stato:
+        type: "boolean"
+      soggetti:
+        type: "array"
+        items:
+          $ref: "#/definitions/SoggettoAltroComponente"
+  Anagrafica:
+    type: "object"
+    properties:
+      nome:
+        type: "string"
+      cognome:
+        type: "string"
+      codiceFiscale:
+        type: "string"
+      dataNascita:
+        type: "string"
+      oraMinutiNascita:
+        type: "string"
+      sesso:
+        type: "string"
+  Autonomo:
+    type: "object"
+    properties:
+      piva:
+        type: "string"
+      comune:
+        type: "string"
+      provincia:
+        type: "string"
+      indirizzo:
+        type: "string"
+  ComponentiNucleo:
+    type: "object"
+    properties:
+      soggetti:
+        type: "array"
+        items:
+          $ref: "#/definitions/SoggettoNucleo"
+  CondizioneOccupazionale:
+    type: "object"
+    properties:
+      stato:
+        type: "string"
+      dati:
+        $ref: "#/definitions/DatiCondizioneOccupazionale"
+  DatiCiDisoccupato:
+    type: "object"
+    properties:
+      comune:
+        type: "string"
+      provincia:
+        type: "string"
+  DatiCondizioneOccupazionale:
+    type: "object"
+    properties:
+      dipendente:
+        $ref: "#/definitions/Dipendente"
+      autonomo:
+        $ref: "#/definitions/Autonomo"
+      disoccupato:
+        $ref: "#/definitions/Disoccupato"
+      nonOccupato:
+        type: "array"
+        items:
+          $ref: "#/definitions/NonOccupato"
+      studente:
+        $ref: "#/definitions/Studente"
+  DatiIsee:
+    type: "object"
+    properties:
+      valore:
+        type: "number"
+        format: "double"
+      dataAttestazione:
+        type: "string"
+  DatiServiziSociali:
+    type: "object"
+    properties:
+      assistente:
+        type: "string"
+      nome:
+        type: "string"
+      indirizzo:
+        type: "string"
+      telefono:
+        type: "string"
+  DatiSoggetto3:
+    type: "object"
+    properties:
+      anagrafica:
+        $ref: "#/definitions/Anagrafica"
+      luogoNascita:
+        $ref: "#/definitions/LuogoNascita"
+      residenza:
+        $ref: "#/definitions/Residenza"
+  DatiSpostamento:
+    type: "object"
+    properties:
+      stato:
+        type: "string"
+      dataVariazione:
+        type: "string"
+      dataAppuntamento:
+        type: "string"
+      residenzaFutura:
+        type: "string"
+  DatiTrasferimento:
+    type: "object"
+    properties:
+      data:
+        type: "string"
+      indirizzoVecchio:
+        type: "string"
+      indirizzoNuovo:
+        type: "string"
+      indirizzoNido:
+        type: "string"
+      dataDal:
+        type: "string"
+      dataAl:
+        type: "string"
+  Dipendente:
+    type: "object"
+    properties:
+      azienda:
+        type: "string"
+      comune:
+        type: "string"
+      provincia:
+        type: "string"
+      indirizzo:
+        type: "string"
+  Disabilita:
+    type: "object"
+    properties:
+      stato:
+        type: "boolean"
+      documenti:
+        type: "array"
+        items:
+          $ref: "#/definitions/Documento"
+  Disoccupato:
+    type: "object"
+    properties:
+      dataDichiarazione:
+        type: "string"
+      soggettoDichiarazione:
+        type: "string"
+      datiCi:
+        $ref: "#/definitions/DatiCiDisoccupato"
+  Documento:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      protocollo:
+        type: "string"
+      dataInserimento:
+        type: "string"
+      eliminato:
+        type: "boolean"
+      file:
+        $ref: "#/definitions/File"
+  DomandaNido:
+    type: "object"
+    properties:
+      idDomandaIscrizione:
+        type: "integer"
+        format: "int64"
+      protocolloDomandaIscrizione:
+        type: "string"
+      statoDomanda:
+        type: "string"
+      ordineScuola:
+        type: "string"
+      responsabilitaGenitoriale:
+        type: "boolean"
+      infoAutocertificazione:
+        type: "boolean"
+      infoGdpr:
+        type: "boolean"
+      richiedente:
+        $ref: "#/definitions/Richiedente"
+      minore:
+        $ref: "#/definitions/Minore"
+      soggetto1:
+        $ref: "#/definitions/Soggetto1"
+      soggetto2:
+        $ref: "#/definitions/Soggetto2"
+      soggetto3:
+        $ref: "#/definitions/Soggetto3"
+      componentiNucleo:
+        $ref: "#/definitions/ComponentiNucleo"
+      altriComponenti:
+        $ref: "#/definitions/AltriComponenti"
+      affido:
+        $ref: "#/definitions/Affido"
+      isee:
+        $ref: "#/definitions/Isee"
+      elencoNidi:
+        type: "array"
+        items:
+          $ref: "#/definitions/Nido"
+      condizioniPunteggio:
+        type: "array"
+        items:
+          $ref: "#/definitions/CondizionePunteggio"
+  File:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      type:
+        type: "string"
+  FratelloFrequentante:
+    type: "object"
+    properties:
+      stato:
+        type: "boolean"
+      tipo:
+        type: "string"
+      anagrafica:
+        $ref: "#/definitions/Anagrafica"
+  GenitoreSolo:
+    type: "object"
+    properties:
+      stato:
+        type: "string"
+      sentenza:
+        $ref: "#/definitions/Sentenza"
+  Gravidanza:
+    type: "object"
+    properties:
+      stato:
+        type: "boolean"
+      documenti:
+        type: "array"
+        items:
+          $ref: "#/definitions/Documento"
+  Isee:
+    type: "object"
+    properties:
+      stato:
+        type: "boolean"
+      dati:
+        $ref: "#/definitions/DatiIsee"
+  LuogoNascita:
+    type: "object"
+    properties:
+      codNazione:
+        type: "string"
+      descNazione:
+        type: "string"
+      codRegione:
+        type: "string"
+      descRegione:
+        type: "string"
+      codProvincia:
+        type: "string"
+      descProvincia:
+        type: "string"
+      codComune:
+        type: "string"
+      descComune:
+        type: "string"
+  Minore:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      presenzaNucleo:
+        type: "boolean"
+      residenzaConRichiedente:
+        type: "boolean"
+      anagrafica:
+        $ref: "#/definitions/Anagrafica"
+      luogoNascita:
+        $ref: "#/definitions/LuogoNascita"
+      residenza:
+        $ref: "#/definitions/Residenza"
+      disabilita:
+        $ref: "#/definitions/Disabilita"
+      serviziSociali:
+        $ref: "#/definitions/ServiziSociali"
+      problemiSalute:
+        $ref: "#/definitions/ProblemiSalute"
+      fratelloFrequentante:
+        $ref: "#/definitions/FratelloFrequentante"
+      trasferimento:
+        $ref: "#/definitions/Trasferimento"
+      spostamento:
+        $ref: "#/definitions/Spostamento"
+  Nido:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int32"
+      codCircoscrizione:
+        type: "string"
+      codScuola:
+        type: "string"
+      descrizione:
+        type: "string"
+      indirizzo:
+        type: "string"
+      codTipoFrequenza:
+        type: "string"
+      codCategoriaScuola:
+        type: "string"
+      codStatoScuola:
+        type: "string"
+      punteggio:
+        type: "integer"
+        format: "int32"
+      posizione:
+        type: "integer"
+        format: "int32"
+      fuoriTermine:
+         type: "boolean"
+      rinuncia:
+         type: "boolean"
+      ammissibile:
+         type: "boolean"
+  NonOccupato:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      azienda:
+        type: "string"
+      comune:
+        type: "string"
+      indirizzo:
+        type: "string"
+      dataInizio:
+        type: "string"
+      dataFine:
+        type: "string"
+  ProblemiSalute:
+    type: "object"
+    properties:
+      stato:
+        type: "boolean"
+      documenti:
+        type: "array"
+        items:
+          $ref: "#/definitions/Documento"
+  Residenza:
+    type: "object"
+    properties:
+      codNazione:
+        type: "string"
+      descNazione:
+        type: "string"
+      codRegione:
+        type: "string"
+      descRegione:
+        type: "string"
+      codProvincia:
+        type: "string"
+      descProvincia:
+        type: "string"
+      codComune:
+        type: "string"
+      descComune:
+        type: "string"
+      cap:
+        type: "string"
+      indirizzo:
+        type: "string"
+      nao:
+        type: "boolean"
+  Richiedente:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      email:
+        type: "string"
+      telefono:
+        type: "string"
+      residenzaFutura:
+        type: "string"
+      recapitoNoResidenza:
+        type: "string"
+      relazioneConMinore:
+        type: "string"
+      condizioneCoabitazione:
+        type: "string"
+      anagrafica:
+        $ref: "#/definitions/Anagrafica"
+      luogoNascita:
+        $ref: "#/definitions/LuogoNascita"
+      residenza:
+        $ref: "#/definitions/Residenza"
+  Sentenza:
+    type: "object"
+    properties:
+      numero:
+        type: "string"
+      data:
+        type: "string"
+      tribunale:
+        type: "string"
+  ServiziSociali:
+    type: "object"
+    properties:
+      stato:
+        type: "boolean"
+      dati:
+        $ref: "#/definitions/DatiServiziSociali"
+      documenti:
+        type: "array"
+        items:
+          $ref: "#/definitions/Documento"
+  Soggetto1:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      anagrafica:
+        $ref: "#/definitions/Anagrafica"
+      luogoNascita:
+        $ref: "#/definitions/LuogoNascita"
+      residenza:
+        $ref: "#/definitions/Residenza"
+      gravidanza:
+        $ref: "#/definitions/Gravidanza"
+      problemiSalute:
+        $ref: "#/definitions/ProblemiSalute"
+      condizioneOccupazionale:
+        $ref: "#/definitions/CondizioneOccupazionale"
+      genitoreSolo:
+        $ref: "#/definitions/GenitoreSolo"
+  Soggetto2:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      presenzaNucleo:
+        type: "boolean"
+      anagrafica:
+        $ref: "#/definitions/Anagrafica"
+      luogoNascita:
+        $ref: "#/definitions/LuogoNascita"
+      residenza:
+        $ref: "#/definitions/Residenza"
+      gravidanza:
+        $ref: "#/definitions/Gravidanza"
+      problemiSalute:
+        $ref: "#/definitions/ProblemiSalute"
+      condizioneOccupazionale:
+        $ref: "#/definitions/CondizioneOccupazionale"
+  Soggetto3:
+    type: "object"
+    properties:
+      stato:
+        type: "boolean"
+      dati:
+        $ref: "#/definitions/DatiSoggetto3"
+  SoggettoAffido:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      relazioneConMinore:
+        type: "string"
+      anagrafica:
+        $ref: "#/definitions/Anagrafica"
+      luogoNascita:
+        $ref: "#/definitions/LuogoNascita"
+      residenza:
+        $ref: "#/definitions/Residenza"
+      sentenza:
+        $ref: "#/definitions/Sentenza"
+      problemiSalute:
+        $ref: "#/definitions/ProblemiSalute"
+  SoggettoAltroComponente:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      relazioneConMinore:
+        type: "string"
+      anagrafica:
+        $ref: "#/definitions/Anagrafica"
+      luogoNascita:
+        $ref: "#/definitions/LuogoNascita"
+      residenza:
+        $ref: "#/definitions/Residenza"
+      problemiSalute:
+        $ref: "#/definitions/ProblemiSalute"
+  SoggettoNucleo:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      relazioneConMinore:
+        type: "string"
+      anagrafica:
+        $ref: "#/definitions/Anagrafica"
+      luogoNascita:
+        $ref: "#/definitions/LuogoNascita"
+      problemiSalute:
+        $ref: "#/definitions/ProblemiSalute"
+  Spostamento:
+    type: "object"
+    properties:
+      stato:
+        type: "boolean"
+      dati:
+        $ref: "#/definitions/DatiSpostamento"
+  Studente:
+    type: "object"
+    properties:
+      istituto:
+        type: "string"
+      corso:
+        type: "string"
+  Trasferimento:
+    type: "object"
+    properties:
+      stato:
+        type: "boolean"
+      dati:
+        $ref: "#/definitions/DatiTrasferimento"
+  CondizionePunteggio:
+    type: "object"
+    properties:
+      codice:
+        type: "string"
+      descrizione:
+        type: "string"
+      ricorrenza:
+        type: "integer"
+        format: "int64"
+      validata:
+        type: "boolean"
+      tipoIstruttoria:
+        type: "string"
+        enum: [S, N, P]
+      codTipoIstruttoria:
+        type: "string"
+      codTipoAllegato:
+        type: "string"
+  InfoAllegatoSoggetto:
+    type: "object"
+    properties:
+      idDomandaIscrizione:
+        type: "integer"
+        format: "int64"
+      codCondizione:
+        type: "string"
+      idAnagraficaSoggetto:
+        type: "integer"
+        format: "int64"
+      cognome:
+        type: "string"
+      nome:
+        type: "string"
+      codiceFiscaleSoggetto:
+        type: "string"
+      codTipoSoggetto:
+        type: "string"
+      codiceFiscaleRichiedente:
+        type: "string"
+      idAllegato:
+        type: "integer"
+        format: "int64"
+      nomeFile:
+        type: "string"
+      mimeType:
+        type: "string"
+      protocollo:
+        type: "string"
+      codTipoAllegato:
+        type: "string"
+      codTipoAllegatoRed:
+        type: "string"
+      dataInserimento:
+        type: "string"
+  VerbaleCommissione:
+    type: "object"
+    properties:
+      protocollo:
+        type: "string"
+      nomeMinore:
+        type: "string"
+      cognomeMinore:
+        type: "string"
+      codiceFiscaleMinore:
+        type: "string"
+      esito:
+        type: "string"
+      dataValidazione:
+        type: "string"
+      dataRifiuto:
+        type: "string"
+      nomeNidoPrimaScelta:
+        type: "string"
+      indirizzoNidoPrimaScelta:
+        type: "string"
+  InfoGenerali:
+    type: "object"
+    properties:
+      dataInizioIscrizioniNidi:
+        type: "string"
+      dataScadenzaIscrizioniNidi:
+        type: "string"
+      dataFineIscrizioniNidi:
+        type: "string"
+  TestataDomandaDaVerificare:
+    type: "object"
+    properties:
+      idDomandaIscrizione:
+        type: "integer"
+        format: "int64"
+      protocollo:
+        type: "string"
+      codStatoDomanda:
+        type: "string"
+      nomeMinore:
+        type: "string"
+      cognomeMinore:
+        type: "string"
+      codiceFiscaleMinore:
+        type: "string"
+      paDis:
+        type: "boolean"
+      paPrbSal:
+        type: "boolean"
+  ParametriGraduatoria:
+    type: "object"
+    properties:
+      codice:
+        type: "string"
+      step:
+        type: "string"
+      codiceStato:
+        type: "string"
+      dataUltimoCalcolo:
+        type: "string"
+      ammissioni:
+        type: "boolean"
+  Graduatoria:
+    type: "object"
+    properties:
+      codice:
+        type: "string"
+      descrizione:
+        type: "string"
+  StepGraduatoria:
+    type: "object"
+    properties:
+      codice:
+        type: "string"
+      descrizione:
+        type: "string"
+  GraduatorieFilter:
+    type: "object"
+    properties:
+      codiceGraduatoria:
+        type: "string"
+      codiceStepGraduatoria:
+        type: "string"
+      codiceScuola:
+        type: "string"
+      codiceTipologiaFrequenza:
+        type: "string"
+      codiceFasciaEta:
+        type: "string"
+  TestataGraduatoria:
+    type: "object"
+    properties:
+      posizione:
+        type: "string"
+      punteggio:
+        type: "integer"
+        format: "int32"
+      isee:
+        type: "string"
+      protocollo:
+        type: "string"
+      cognomeMinore:
+        type: "string"
+      nomeMinore:
+        type: "string"
+      dataNascitaMinore:
+        type: "string"
+      tipologiaFrequenza:
+        type: "string"
+      preferenza:
+        type: "string"
+      sceltaPreferenza:
+        type: "string"
+      statoPreferenza:
+        type: "string"
+      preferenze:
+        type: "array"
+        items:
+          $ref: "#/definitions/Nido"
+  InfoCalcoloGraduatoria:
+    type: "object"
+    properties:
+      domandeNonIstruite:
+        type: "integer"
+      verifichePreventivePendenti:
+        type: "array"
+        items:
+          $ref: "#/definitions/InfoVerifiche"
+  InfoVerifiche:
+    type: "object"
+    properties:
+      codiceCondizione:
+        type: "string"
+      descrizioneCondizione:
+        type: "string"
+      codiceTipoVerifica:
+        type: "string"
+      occorrenze:
+        type: "integer"
+  ParametriCalcoloGraduatoria:
+    type: "object"
+    properties:
+      codiceGraduatoria:
+        type: "string"
+      codiceStatoGraduatoria:
+        type: "string"
+      stepGraduatoria:
+        type: "integer"
+      codiceOrdineScuola:
+        type: "string"
+      codiceStatoDaCalcolare:
+        type: "string"
+  AnnoScolastico:
+    type: "object"
+    properties:
+      codiceAnnoScolastico:
+        type: "string"
+      descrizione:
+        type: "string"
+      dataDa:
+        type: "string"
+      dataA:
+        type: "string"
+  Classe:
+    type: "object"
+    properties:
+      idClasse:
+        type: "integer"
+        format: "int64"
+      postiLiberi:
+        type: "integer"
+      postiAmmessi:
+        type: "integer"
+      postiAccettati:
+        type: "integer"
+      denominazione:
+        type: "string"
+      flAmmissioneDis:
+        type: "string"
+      codFasciaEta:
+        type: "string"
+      codScuola:
+        type: "string"
+      codOrdineScuola:
+        type: "string"
+      codAnnoScolastico:
+        type: "string"
+      codTipoFrequenza:
+        type: "string"
+  ClasseParam:
+    type: "object"
+    properties:
+      idClasse:
+        type: "integer"
+        format: "int64"
+      postiLiberi:
+        type: "integer"
+      postiAmmessi:
+        type: "integer"
+      denominazione:
+        type: "string"
+      ammissioneDis:
+        type: "boolean"
+      codFasciaEta:
+        type: "string"
+      codScuola:
+        type: "string"
+      codAnnoScolastico:
+        type: "string"
+      codTipoFrequenza:
+        type: "string"
+  AmmissioniParam:
+    type: "object"
+    properties:
+      idClasseList:
+        type: "array"
+        items:
+          type: "integer"
+          format: "int64"
+      value:
+        type: "boolean"
+  InfoResidenzeForzate:
+    type: "object"
+    properties:
+      codGraduatoria:
+        type: "string"
+      codTipoScuola:
+        type: "string"
+      idStepGra:
+        type: "integer"
+        format: "int64"
+      idStepGraCon:
+        type: "integer"
+        format: "int64"
+      residenzeForzate:
+        type: "array"
+        items:
+          $ref: "#/definitions/ResidenzaForzata"
+  ResidenzaForzata:
+    type: "object"
+    properties:
+      protocollo:
+        type: "string"
+      codiceFiscale:
+        type: "string"
+      cognome:
+        type: "string"
+      nome:
+        type: "string"
+      codFasciaEta:
+        type: "string"
+      codScuola:
+        type: "string"
+      descScuola:
+        type: "string"
+      indirizzo:
+        type: "string"
+      codOrdineScuola:
+        type: "string"
+  GraduatoriaCompleta:
+    type: "object"
+    properties:
+      codFasciaEta:
+        type: "string"
+      protocollo:
+        type: "string"
+      punteggio:
+        type: "integer"
+      nome:
+        type: "string"
+      cognome:
+        type: "string"
+      codiceFiscale:
+        type: "string"
+      isee:
+        type: "number"
+        format: "double"
+      dataConsegna:
+        type: "string"
+        format: "date-time"
+      dataNascita:
+        type: "string"
+        format: "date-time"
+      oraNascita:
+        type: "string"
+      pref1:
+        type: "string"
+      pref2:
+        type: "string"
+      pref3:
+        type: "string"
+      pref4:
+        type: "string"
+      pref5:
+        type: "string"
+      pref6:
+        type: "string"
+      pref7:
+        type: "string"
+      pref8:
+        type: "string"
+      pref9:
+        type: "string"
+      pref10:
+        type: "string"
+  InfoStepGraduatoria:
+    type: "object"
+    properties:
+      idAnagraficaGra:
+        type: "integer"
+        format: "int64"
+      codAnagraficaGra:
+        type: "string"
+      codAnnoScolastico:
+        type: "string"
+      idStepGra:
+        type: "integer"
+        format: "int64"
+      step:
+        type: "integer"
+      dtStepGra:
+        type: "string"
+        format: "date-time"
+      idStepGraCon:
+        type: "integer"
+        format: "int64"
+      dtStepCon:
+        type: "string"
+        format: "date-time"
+      flAmmissioni:
+        type: "string"
+      codStatoGra:
+        type: "string"
+  GraduatoriaApprovazione:
+    type: "object"
+    properties:
+      protocollo:
+        type: "string"
+      dataConsegna:
+        type: "string"
+        format: "date-time"
+      codFasciaEta:
+        type: "string"
+      cognome:
+        type: "string"
+      nome:
+        type: "string"
+      dataNascita:
+        type: "string"
+        format: "date-time"
+      oraNascita:
+        type: "string"
+      isee:
+        type: "number"
+        format: "double"
+      punteggioPrimaScelta:
+        type: "integer"
+      punteggio:
+        type: "integer"
+      flFuoriTermine:
+        type: "string"
+      idDomandaIscrizione:
+        type: integer
+        format: int64
+  AnagraficaGraduatoria:
+    type: "object"
+    properties:
+      idAnagraficaGraduatoria:
+        type: "integer"
+        format: "int64"
+      codAnagraficaGraduatoria:
+        type: "string"
+      codAnnoScolastico:
+        type: "string"
+      codOrdineScuola:
+        type: "string"
+      dataInizioIscrizioni:
+        type: "string"
+        format: "date-time"
+      dataScadenzaIscrizioni:
+        type: "string"
+        format: "date-time"
+      dataFineIscrizioni:
+        type: "string"
+        format: "date-time"
+      dataScadenzaGraduatoria:
+        type: "string"
+        format: "date-time"
+      dataScadenzaRicorsi:
+        type: "string"
+        format: "date-time"
+  AnagraficaStepGraduatoria:
+    type: "object"
+    properties:
+      step:
+        type: "integer"
+      idStepGra:
+        type: "integer"
+        format: "int64"
+      dtStepGra:
+        type: "string"
+        format: "date-time"
+      dtDomInvDa:
+        type: "string"
+        format: "date-time"
+      dtDomInvA:
+        type: "string"
+        format: "date-time"
+      dtAllegati:
+        type: "string"
+        format: "date-time"
+      codAnagraficaGraduatoria:
+        type: "string"
+      codAnnoScolastico:
+        type: "string"
+      codOrdineScuola:
+        type: "string"
+  AnagraficaEta:
+    type: "object"
+    properties:
+      codAnagraficaGraduatoria:
+        type: "string"
+      codAnnoScolastico:
+        type: "string"
+      codFasciaEta:
+        type: "string"
+      codOrdineScuola:
+        type: "string"
+      dataA:
+        type: "string"
+        format: "date-time"
+      dataDa:
+        type: "string"
+        format: "date-time"
+      idEta:
+        type: "integer"
+        format: "int64"
+  TipoFasciaEta:
+    type: "object"
+    properties:
+      codFasciaEta:
+        type: "string"
+      descFasciaEta:
+        type: "string"
+      codOrdineScuola:
+        type: "string"
+  RecordPostiLiberi:
+    type: "object"
+    properties:
+      codOrdineScuola:
+        type: "string"
+      codAnagraficaGraduatoria:
+        type: "string"
+      dataCreazione:
+        type: "string"
+        format: "date-time"
+      codScuola:
+        type: "string"
+      indirizzoScuola:
+        type: "string"
+      descFasciaEta:
+        type: "string"
+      descTipoFrequenza:
+        type: "string"
+      postiLiberi:
+        type: "string"
+      postiAmmessi:
+        type: "string"
+  RecordPreferenzaScuola:
+    type: "object"
+    properties:
+      idGraduatoria:
+        type: "integer"
+        format: "int64"
+      idDomandaIscrizione:
+        type: "integer"
+        format: "int64"
+      ordinePreferenza:
+        type: "integer"
+      codScuola:
+        type: "string"
+      descScuola:
+        type: "string"
+      indirizzo:
+        type: "string"
+      idTipoFrequenza:
+        type: "integer"
+        format: "int64"
+      codTipoFrequenza:
+        type: "string"
+      descTipoFre:
+        type: "string"
+      idStatoScu:
+        type: "integer"
+        format: "int64"
+      codStatoScu:
+        type: "string"
+      descStatoScu:
+        type: "string"
+      dtStato:
+        type: "string"
+        format: "date-time"
+  Result:
+    type: "object"
+    properties:
+      status:
+        type: "integer"
+      messages:
+        type: "array"
+        items:
+          type: "string"
+  InputPart:
+    type: "object"
+    properties:
+      headers:
+        type: "object"
+        additionalProperties:
+          type: "array"
+          items:
+            type: "string"
+      mediaType:
+        $ref: "#/definitions/MediaType"
+      bodyAsString:
+        type: "string"
+      contentTypeFromMessage:
+        type: "boolean"
+  MediaType:
+    type: "object"
+    properties:
+      type:
+        type: "string"
+      subtype:
+        type: "string"
+      parameters:
+        type: "object"
+        additionalProperties:
+          type: "string"
+      wildcardType:
+        type: "boolean"
+      wildcardSubtype:
+        type: "boolean"
+  MultipartFormDataInput:
+    type: "object"
+    properties:
+      formData:
+        type: "object"
+        additionalProperties:
+          $ref: "#/definitions/InputPart"
+      formDataMap:
+        type: "object"
+        additionalProperties:
+          type: "array"
+          items:
+            $ref: "#/definitions/InputPart"
+      parts:
+        type: "array"
+        items:
+          $ref: "#/definitions/InputPart"
+      preamble:
+        type: "string"

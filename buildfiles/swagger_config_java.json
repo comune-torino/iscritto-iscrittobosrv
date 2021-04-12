@@ -1,0 +1,18 @@
+{
+"java8": false,
+"useBeanValidation": true,
+"hideGenerationTimestamp": true,
+"apiPackage": "it.csi.iscritto.iscrittobosrv.business.be",
+"modelPackage":  "it.csi.iscritto.iscrittobosrv.dto",
+"invokerPackage": "it.csi.iscritto.iscrittobosrv.business.be",
+"implFolder": "implfolder",
+"sourceFolder": "src/java",
+"useSwaggerFeature": false,
+"generateJbossDeploymentDescriptor": false,
+"generateImplArtifacts": false,
+"generateSwaggerMetadata": false,
+"attributeSerializationStrategy": "implicit-camel-case", 
+"accessHttpHeaders": true,
+"accessHttpRequest": true,
+"serializableModel": true
+}

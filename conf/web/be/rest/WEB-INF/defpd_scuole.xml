@@ -1,0 +1,46 @@
+<porta-delegata name="serviscritto.scuole">
+	<services>
+		<service name="scuole"
+			public-interface-class="it.csi.iscritto.serviscritto.interfacecsi.scuole.ScuoleSrv"
+			top-version="2.5.0">
+			<operations>
+				<operation name="getElencoScuole" type="synch-call" since="1.0.0">
+					<param-list>
+						<param name="criterioRicerca"
+							type="it.csi.iscritto.serviscritto.dto.scuole.CriterioRicerca" />
+					</param-list>
+					<ret-val type="it.csi.iscritto.serviscritto.dto.scuole.Scuola[]" />
+				</operation>
+				<operation name="getCodAnnoNidi" type="synch-call" since="1.0.0">
+					<param-list>
+						<param name="data" type="java.util.Date" />
+					</param-list>
+					<ret-val type="java.lang.String" />
+				</operation>
+				<operation name="getCodAnniMaterne" type="synch-call"
+					since="1.0.0">
+					<param-list>
+						<param name="data" type="java.util.Date" />
+					</param-list>
+					<ret-val type="java.lang.String[]" />
+				</operation>
+			</operations>
+		</service>
+	</services>
+	<config>
+		<url-pa>**not used**</url-pa>
+		<pluggable-pd-list chooser-class="it.csi.csi.porte.FixedDelegateChooser">
+			<pluggable-pd name="serviscritto.scuole.ejb"
+				class="it.csi.csi.porte.ejb20.PortaDelegataEJB" url-pa="@iscritto.serviscritto.scuole.pa.url@"
+				url-qm="serviscritto.ejb.ApplScuoleQMGR">
+			</pluggable-pd>
+		</pluggable-pd-list>
+		<pre-function-handler-list>
+
+		</pre-function-handler-list>
+		<post-function-handler-list>
+
+		</post-function-handler-list>
+		<queue-manager url="" />
+	</config>
+</porta-delegata>
